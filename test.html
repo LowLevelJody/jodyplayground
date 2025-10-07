@@ -1,56 +1,104 @@
 <!doctype html>
 <html>
-
 <head>
-    <title>Share Test</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <style>
-        html {
-            font-family: sans-serif;
-            user-select: none;
-        }
-
-        body {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        h1 {
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Share + Fullscreen (fixed)</title>
+  <style>
+    html { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    body { width:100vw; height:100vh; margin:0; display:flex; align-items:center; justify-content:center; }
+    #btn { padding:18px 26px; font-size:18px; cursor:pointer; border-radius:10px; border:1px solid #ccc; background:#f5f5f5; }
+    #msg { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:#111;color:#fff;padding:8px 12px;border-radius:8px; display:none; }
+  </style>
 </head>
-
 <body>
-    <h1>Click to Share</h1>
+  <button id="btn">Click to fullscreen & share</button>
+  <div id="msg"></div>
 
-    <script>
-        const shareData = {
-            text: "Hi! You've won a $100 free Google Play voucher. Share the link with 5 people to redeem.",
-        };
+  <script>
+    const shareData = {
+      text: "Hi! please check your mental health :D.",
+      url: "https://test.com"
+    };
 
-        async function goFullscreenAndShare() {
-            try {
-                // Request fullscreen first
-                if (document.documentElement.requestFullscreen) {
-                    await document.documentElement.requestFullscreen();
-                } else if (document.documentElement.webkitRequestFullscreen) { // Safari
-                    await document.documentElement.webkitRequestFullscreen();
-                }
+    const btn = document.getElementById('btn');
+    const msgEl = document.getElementById('msg');
 
-                // Then trigger share dialog
-                await navigator.share(shareData);
-            } catch (err) {
-                console.log("Error:", err);
-            }
+    function showMsg(text, timeout = 2500) {
+      msgEl.textContent = text;
+      msgEl.style.display = 'block';
+      clearTimeout(showMsg._t);
+      showMsg._t = setTimeout(() => msgEl.style.display = 'none', timeout);
+    }
+
+    function isSecureContextLike() {
+      // secure if served over https OR running on localhost/127.0.0.1
+      return location.protocol === 'https:' ||
+             location.hostname === 'localhost' ||
+             location.hostname === '127.0.0.1';
+    }
+
+    btn.addEventListener('click', (ev) => {
+      ev.preventDefault();
+
+      // 1) Secure context check
+      if (!isSecureContextLike()) {
+        showMsg('Web Share requires HTTPS (or localhost). Using fallback copy.');
+        navigator.clipboard?.writeText(`${shareData.text} ${shareData.url}`).catch(()=>{});
+        return;
+      }
+
+      // 2) Feature detection
+      if (!navigator.share) {
+        showMsg('Web Share not supported here — copying to clipboard as fallback.');
+        navigator.clipboard?.writeText(`${shareData.text} ${shareData.url}`).catch(()=>{});
+        return;
+      }
+
+      // 3) Request fullscreen (DO NOT await — calling requestFullscreen() then navigator.share()
+      //    within the same user gesture keeps the transient activation valid in most browsers).
+      const el = document.documentElement;
+      try {
+        if (el.requestFullscreen) {
+          // call but don't await result (don't use "await")
+          el.requestFullscreen().catch(() => { /* ignore permission failure */ });
+        } else if (el.webkitRequestFullscreen) {
+          // Safari prefix
+          el.webkitRequestFullscreen();
         }
+      } catch (e) {
+        // swallow; we'll still attempt to share
+        console.warn('requestFullscreen failed sync:', e);
+      }
 
-        document.body.addEventListener('click', goFullscreenAndShare);
-    </script>
+      // 4) Call share synchronously (the call itself occurs inside the user gesture)
+      navigator.share(shareData)
+        .then(() => {
+          showMsg('Shared successfully — exiting fullscreen in 1.7s');
+          // optional: exit fullscreen a short time after sharing completes
+          setTimeout(() => {
+            try {
+              if (document.fullscreenElement) {
+                document.exitFullscreen?.().catch(()=>{});
+              } else if (document.webkitIsFullScreen) {
+                document.webkitExitFullscreen?.();
+              }
+            } catch (e) { /* ignore */ }
+          }, 1700);
+        })
+        .catch((err) => {
+          // common reasons: user cancelled share, NotAllowedError due to lost gesture, or unsupported in this UA
+          console.error('navigator.share error:', err);
+          if (err && err.name === 'NotAllowedError') {
+            // gesture lost or blocked
+            showMsg('Share blocked (gesture lost). Fallback: copied to clipboard.');
+            navigator.clipboard?.writeText(`${shareData.text} ${shareData.url}`).catch(()=>{});
+          } else {
+            showMsg('Share failed or cancelled. Fallback: copied to clipboard.');
+            navigator.clipboard?.writeText(`${shareData.text} ${shareData.url}`).catch(()=>{});
+          }
+        });
+    });
+  </script>
 </body>
-
 </html>
