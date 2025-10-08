@@ -4,14 +4,18 @@
   }
 
 function f() {
-  w = window.open(
-    "javascript:document.write('<button onclick=\"alert(\\'Welcome to Jody house\\')\">Click me</button>');location='http://amazon.com';",
-    "new",
-    "width=500,height=500"
-  );
+  w = window.open("http://amazon.com", "new", "width=500,height=500");
+
+  w.document.write(`
+    <button onclick="alert('Welcome to Jody house')">Click me</button>
+    <h1>I am Groot</h1>
+  `);
+
+  w.location = "http://amazon.com";
 
   i = setInterval("try { x = w.location.href; } catch(e) { clearInterval(i); next(); }", 1);
 }
+
 
 
 
