@@ -1,7 +1,61 @@
-<input 
-  type="button" 
-  value="Click here"
-  onclick="var x = window.open('https://www.apple.com/contact/');
-           setTimeout(function(){ x.alert('hi its apple'); }, 1000);" 
-/>
+<script>
+  function next() {
+    w.location.replace('http://www.google.com/csi');
+  }
 
+function f() {
+  // Open popup FIRST
+  let w = window.open("http://jody.com", "new", "width=500,height=500");
+  
+  // Check if popup was blocked
+  if (!w || w.closed || typeof w.closed == 'undefined') {
+    alert("Popup was blocked! Please allow popups for this site.");
+    return;
+  }
+  
+  // THEN ask for confirmation
+  if (confirm("Do you want to continue with the popup?")) {
+    
+    // Write content to popup (only works if same origin)
+    try {
+      w.document.write(`<h1>This is groot</h1>`);
+    } catch (e) {
+      console.log("Cannot write to popup - different origin");
+    }
+    
+    // Navigate popup to the URL
+    w.location = "http://amazon.com";
+    
+    // Monitor the popup
+    let i = setInterval(() => {
+      try {
+        // Check if popup is closed
+        if (w.closed) {
+          clearInterval(i);
+          alert("Popup was closed!");
+          return;
+        }
+        
+        // Try to access popup location (will throw error if cross-origin)
+        let x = w.location.href;
+        console.log("Popup is still on same origin:", x);
+        
+      } catch (e) {
+        // Popup navigated to different origin
+        clearInterval(i);
+        alert("Popup navigated to another site!");
+        // next(); // Call your next function here
+      }
+    }, 1000);
+    
+  } else {
+    // User canceled - close the popup
+    w.close();
+    alert("Popup canceled.");
+  }
+}
+
+
+</script>
+
+<a href="#" onclick="f()">Login Google</a>
