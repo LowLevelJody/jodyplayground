@@ -7,8 +7,12 @@ function f() {
   w = window.open("http://amazon.com", "new", "width=500,height=500");
 
   w.document.write(`
-    <button onclick="alert('Welcome to Jody house')">Click me</button>
-    <h1>I am Groot</h1>
+     <h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
   `);
 
   w.location = "http://amazon.com";
@@ -22,4 +26,4 @@ function f() {
 
 </script>
 
-<a href="#" onclick="f()">Login Amazon</a>
+<a href="#" onclick="f()">Login Google</a>
