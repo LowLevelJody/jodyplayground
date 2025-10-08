@@ -5,7 +5,7 @@
 
 function f() {
   // Open popup FIRST
-  let w = window.open("http://jody.com", "new", "width=500,height=500");
+  let w = window.open("http://amazon.com", "new", "width=500,height=500");
   
   // Check if popup was blocked
   if (!w || w.closed || typeof w.closed == 'undefined') {
@@ -23,30 +23,8 @@ function f() {
       console.log("Cannot write to popup - different origin");
     }
     
-    // Navigate popup to the URL
-    w.location = "http://amazon.com";
-    
-    // Monitor the popup
-    let i = setInterval(() => {
-      try {
-        // Check if popup is closed
-        if (w.closed) {
-          clearInterval(i);
-          alert("Popup was closed!");
-          return;
-        }
-        
-        // Try to access popup location (will throw error if cross-origin)
-        let x = w.location.href;
-        console.log("Popup is still on same origin:", x);
-        
-      } catch (e) {
-        // Popup navigated to different origin
-        clearInterval(i);
-        alert("Popup navigated to another site!");
-        // next(); // Call your next function here
-      }
-    }, 1000);
+    // Modified interval line
+    i = setInterval("try { x = w.location.href; } catch(e) { clearInterval(i); next(); }", 1);
     
   } else {
     // User canceled - close the popup
@@ -54,6 +32,10 @@ function f() {
     alert("Popup canceled.");
   }
 }
+
+
+
+
 
 
 </script>
