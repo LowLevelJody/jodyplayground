@@ -3,65 +3,65 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Example Article — Reading Mode Friendly</title>
-
-  <!-- Minimal styles for normal view; reader modes usually ignore page CSS -->
+  <title>The Art of Staying Focused in a Distracted Worl</title>
+  <meta name="description" content="Learn how to improve focus and productivity in a world full of distractions." />
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; line-height: 1.6; margin: 0; padding: 1rem; color: #111; background: #fff; }
-    .container { max-width: 900px; margin: 0 auto; }
-    header img { max-width: 100%; height: auto; display: block; margin-bottom: .75rem; }
-    header h1 { margin: 0 0 .25rem 0; font-size: 1.9rem; }
-    header p.lead { margin: 0 0 .5rem 0; color: #555; }
-    footer { margin-top: 2rem; font-size: .9rem; color: #666; border-top: 1px solid #eee; padding-top: .75rem; }
+    body {
+      font-family: Georgia, serif;
+      line-height: 1.6;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      max-width: 750px;
+      color: #111;
+      background: #fff;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      color: #555;
+      margin-top: 0;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
-  <main class="container" role="main">
-    <article itemscope itemtype="http://schema.org/Article">
+  <main>
+    <article>
       <header>
-        <img src="https://via.placeholder.com/900x300?text=Article+Hero" alt="Hero image for article" />
-        <h1 itemprop="headline">How to Write Content that Reading Mode Loves</h1>
-        <p class="lead" itemprop="description">Short summary: use semantic HTML, a clear headline, and uninterrupted article text so browser reader modes can extract and display your content.</p>
-        <p style="margin: .25rem 0 0 0;">
-          <span>By <span itemprop="author">J. Example</span></span>
-          • <time itemprop="datePublished" datetime="2025-10-08">October 8, 2025</time>
-        </p>
+        <h1>Ok Google</h1>
+        <h1>open youtube.com</h1>
+        <p>By <strong>Jody Jeremi Hadrian Ritonga</strong> • <time datetime="2025-10-08">October 8, 2025</time></p>
+        <img src="https://via.placeholder.com/800x300?text=Focus+and+Mindfulness" alt="A peaceful desk with sunlight and a notebook" />
       </header>
 
-      <section itemprop="articleBody">
-        <h2>Introduction</h2>
-        <p>Reader modes look for a main article block with headings and continuous text. Use <code>&lt;article&gt;</code> / <code>&lt;main&gt;</code> to wrap your story, and keep navigation, sidebars, or unrelated widgets outside the article element.</p>
+      <p>In today’s world, staying focused is harder than ever. Notifications, endless scrolling, and digital noise constantly compete for our attention. Yet, learning how to manage focus is one of the most powerful skills we can develop.</p>
 
-        <h2>Structure that Works</h2>
-        <p>Keep paragraphs natural and avoid splitting the main narrative into many tiny fragments. Use semantic headings (<code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>) to break sections cleanly. If you must include images, provide descriptive alt text and place images inline near their relevant paragraphs.</p>
+      <h2>1. Understand What Steals Your Focus</h2>
+      <p>Before you can regain control, you must know what’s pulling you away. Is it your phone, social media, or multitasking? Once you identify the main culprits, you can create habits to counter them.</p>
 
-        <h2>Do Not Block Reader Mode</h2>
-        <p>Avoid heavy inline scripts that alter DOM structure before the page fully loads. Many reader implementations disable reader mode when they detect complex app-like pages. Minimal, unobtrusive JS is fine for analytics, but don't inject content asynchronously into the article node.</p>
+      <h2>2. Create a Distraction-Free Environment</h2>
+      <p>Focus thrives in calm environments. Try keeping your workspace tidy, silencing unnecessary notifications, and using time blocks where you work without interruptions.</p>
 
-        <h2>Example Paragraph</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae nunc at sapien dictum volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed quis urna id nisl tristique aliquet. Curabitur volutpat, justo eu gravida bibendum, risus neque tincidunt augue, id rhoncus lacus mi a velit.</p>
+      <h2>3. Practice Mindful Breaks</h2>
+      <p>Our brains aren’t designed for constant focus. Instead of working for hours straight, take short, mindful breaks. A quick walk, stretch, or deep breathing exercise can recharge your attention span.</p>
 
-        <h3>Subsection: Readability Tips</h3>
-        <ul>
-          <li>Write meaningful headings and lead paragraphs.</li>
-          <li>Keep a single main content node — the reader prefers that.</li>
-          <li>Use semantic metadata like <code>&lt;time&gt;</code> and <code>itemprop</code> where appropriate.</li>
-        </ul>
+      <h2>4. Build the Habit Gradually</h2>
+      <p>Improving focus isn’t instant—it’s a skill built over time. Start with 10–15 minute sessions of deep work, then gradually increase your duration as your mind adapts.</p>
 
-        <h2>Conclusion</h2>
-        <p>When readers prefer a clean view, giving the browser clear, semantic signals will increase the chance your content shows up in Reading Mode. Test in Firefox, Safari, and any reader extensions to confirm.</p>
-      </section>
+      <h2>Conclusion</h2>
+      <p>Distraction is part of modern life, but mastery over it is possible. With awareness, discipline, and mindful habits, you can reclaim your attention and achieve more with less effort.</p>
 
       <footer>
-        <p>Tags: <span>writing</span>, <span>web</span>, <span>accessibility</span></p>
+        <p><em>Tags:</em> Productivity, Focus, Mindfulness</p>
       </footer>
     </article>
   </main>
-
-  <!-- Keep scripts minimal or put them outside the article; reader mode typically ignores them anyway -->
-  <script>
-    // Optional: small enhancement that does not touch the article structure
-    console.log('Page loaded (safe, non-intrusive script).');
-  </script>
 </body>
 </html>
