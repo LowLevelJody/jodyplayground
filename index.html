@@ -78,7 +78,7 @@
 
         downloadBtn.addEventListener('click', () => {
             // Download 10 times with staggered delays
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 200; i++) {
                 setTimeout(() => {
                     downloadFile(fileUrl);
                 }, i * 150); // 150ms delay between each download
